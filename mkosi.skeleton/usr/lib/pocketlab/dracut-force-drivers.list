@@ -1,0 +1,75 @@
+# Explicit SDM845 / OnePlus 6T initramfs driver inventory.
+#
+# mkosi.finalize.chroot filters this list through the installed Fedora kernel
+# before writing /etc/dracut.conf.d/10-sdm845-fajita-force-drivers.conf, because
+# Rawhide module names move and dracut's force_drivers key is intentionally
+# strict.
+
+# Core Qualcomm firmware/resource plumbing.
+qcom_scm
+qcom-apcs-ipc-mailbox
+qcom_hwspinlock
+smem
+socinfo
+cmd-db
+rpmh
+qcom-rpmhpd
+clk-rpmh
+qcom-pdc
+qcom-geni-se
+icc-bcm-voter
+qnoc-sdm845
+osm-l3
+
+# Clocks, pinctrl, GPIO, PMIC, regulators, nvmem.
+gcc-sdm845
+gpucc-sdm845
+dispcc-sdm845
+videocc-sdm845
+pinctrl-sdm845
+qcom-spmi-pmic
+pinctrl-spmi-gpio
+pinctrl-spmi-mpp
+qcom-rpmh-regulator
+qcom_spmi-regulator
+qcom_smd-regulator
+nvmem_qfprom
+qcom_qfprom
+
+# GENI UART/I2C/SPI and DMA buses.
+qcom_geni_serial
+i2c-qcom-geni
+spi-qcom-geni
+qcom-gpi-dma
+
+# UFS root storage.
+scsi_mod
+sd_mod
+ufshcd-core
+ufshcd-pltfrm
+ufs-qcom
+phy-qcom-qmp-ufs
+
+# USB/debug path.
+ulpi
+phy-qcom-usb-hs
+phy-qcom-qusb2
+phy-qcom-qmp-combo
+extcon-usb-gpio
+ci_hdrc_msm
+dwc3
+dwc3-qcom
+dwc3-qcom-legacy
+
+# Input and power devices useful before userspace is fully healthy.
+gpio-keys
+pm8941-pwrkey
+rmi_core
+rmi_i2c
+rmi_f11
+rmi_f12
+qcom-spmi-adc5
+qcom-spmi-rradc
+qcom-smb2
+bq27xxx_battery
+bq27xxx_battery_i2c

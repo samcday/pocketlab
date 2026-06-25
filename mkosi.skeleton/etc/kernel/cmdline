@@ -1,0 +1,1 @@
+root=LABEL=fedora rootfstype=ext4 rootwait rw plymouth.ignore-serial-consoles sysrq_always_enabled=1 console=ttyMSM0,115200n8 earlycon splash init_on_alloc=0

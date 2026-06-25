@@ -4,6 +4,7 @@ set -euo pipefail
 candidate_file=/usr/lib/pocketlab/dracut-force-drivers.list
 dracut_conf=/etc/dracut.conf.d/10-sdm845-fajita-force-drivers.conf
 missing_file=/var/lib/pocketlab/dracut-force-drivers.missing
+device_services=(rmtfs.service tqftpserv.service)
 
 trim() {
     local value="$1"
@@ -69,6 +70,11 @@ mkdir -p /etc/dracut.conf.d /var/lib/pocketlab
 } > "$dracut_conf"
 
 printf '%s\n' "${missing[@]}" > "$missing_file"
+
+systemctl --root=/ preset "${device_services[@]}"
+for service in "${device_services[@]}"; do
+    systemctl --root=/ is-enabled "$service" >/dev/null || { echo "$service is not enabled" >&2; exit 1; }
+done
 
 mkdir -p /boot/loader/entries
 printf 'type1\n' > /boot/loader/entries.srel

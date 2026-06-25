@@ -1,0 +1,3 @@
+# Enable SDM845 userspace services required for modem/remoteproc firmware access.
+enable rmtfs.service
+enable tqftpserv.service

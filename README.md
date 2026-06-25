@@ -69,6 +69,10 @@ Candidates missing from the installed kernel are recorded in:
 
 This keeps the driver inventory explicit without making Rawhide module renames fatal.
 
+## Device Services
+
+`rmtfs.service` and `tqftpserv.service` are enabled through the image's systemd preset policy and verified during finalization.
+
 ## Development Defaults
 
 The root password is currently `147147` so UART login remains possible while display/input/session bring-up is unstable. Remove this once initial setup is reliable enough for the device.

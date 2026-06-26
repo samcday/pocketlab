@@ -47,6 +47,8 @@ The Phosh package set follows Fedora Kiwi's Phosh intent by installing the `phos
 
 `dracut-config-rescue` is also excluded because Fedora's rescue initrd path breaks this non-ESP/XBOOTLDR-only image and is not useful for this device workflow.
 
+`blob-wrangler` is installed from the `samcday/blob-wrangler-nightly` COPR to load device firmware blobs on the target.
+
 ## SDM845 Dracut Drivers
 
 The explicit candidate inventory lives in:
@@ -71,7 +73,7 @@ This keeps the driver inventory explicit without making Rawhide module renames f
 
 ## Device Services
 
-`rmtfs.service` and `tqftpserv.service` are enabled through the image's systemd preset policy and verified during finalization.
+`blob-wrangler.service`, `rmtfs.service`, and `tqftpserv.service` are enabled through the image's systemd preset policy and verified during finalization.
 
 ## Development Defaults
 

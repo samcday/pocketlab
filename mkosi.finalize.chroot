@@ -4,7 +4,7 @@ set -euo pipefail
 candidate_file=/usr/lib/pocketlab/dracut-force-drivers.list
 dracut_conf=/etc/dracut.conf.d/10-sdm845-fajita-force-drivers.conf
 missing_file=/var/lib/pocketlab/dracut-force-drivers.missing
-device_services=(rmtfs.service tqftpserv.service)
+device_services=(blob-wrangler.service rmtfs.service tqftpserv.service)
 
 trim() {
     local value="$1"

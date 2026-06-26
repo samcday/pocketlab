@@ -1,6 +1,6 @@
 # pocketlab
 
-Fedora Rawhide arm64 image experiments for booting Fedora's stock kernel and userspace on the OnePlus 6T (`oneplus-fajita`) through pocketboot.
+Fedora Rawhide arm64 image experiments for booting Fedora's stock kernel and userspace on phones through pocketboot.
 
 The image is intentionally boring:
 
@@ -17,11 +17,13 @@ The image is intentionally boring:
 Use mkosi v26 from the local checkout:
 
 ```sh
-~/src/mkosi/bin/mkosi summary
-~/src/mkosi/bin/mkosi build
+~/src/mkosi/bin/mkosi summary --profile sdm845-oneplus-fajita
+~/src/mkosi/bin/mkosi summary --profile msm8916-samsung-a5u-eur
+~/src/mkosi/bin/mkosi build --profile sdm845-oneplus-fajita
+~/src/mkosi/bin/mkosi build --profile msm8916-samsung-a5u-eur
 ```
 
-The main output is `mkosi.output/pocketlab.raw`.
+The main outputs are `mkosi.output/fedora-sdm845-oneplus-fajita.raw` and `mkosi.output/fedora-msm8916-samsung-a5u-eur.raw`.
 
 ## Boot Contract
 
@@ -32,7 +34,7 @@ The generated XBOOTLDR partition contains:
 - `/loader/entries/*.conf`
 - per-kernel `linux`
 - per-kernel `initrd`
-- per-kernel `sdm845-oneplus-fajita.dtb` copied by Fedora's `90-loaderentry.install`
+- the per-device DTB selected by the active mkosi profile and copied by Fedora's `90-loaderentry.install`
 
 ## Fedora Alignment
 
@@ -40,8 +42,8 @@ This repo avoids mkosi's initrd and UKI paths. `/boot` is produced by Fedora mec
 
 - `/etc/kernel/install.conf` selects `layout=bls` and `initrd_generator=dracut`.
 - `/etc/kernel/cmdline` supplies the kernel command line consumed by Fedora's BLS generator.
-- `/etc/kernel/devicetree` lets Fedora's `90-loaderentry.install` copy and reference the fajita DTB.
-- `mkosi.finalize.chroot` reruns `kernel-install add` after generating a filtered SDM845 dracut config.
+- The active mkosi profile provides `/etc/kernel/devicetree`, letting Fedora's `90-loaderentry.install` copy and reference the selected device DTB.
+- `mkosi.finalize.chroot` reruns `kernel-install add` after generating a filtered per-device dracut config.
 
 The Phosh package set follows Fedora Kiwi's Phosh intent by installing the `phosh-desktop-environment` environment plus `initial-setup-gui-wayland-generic`. `fedora-release-mobility` is intentionally excluded for this bring-up image.
 
@@ -49,24 +51,32 @@ The Phosh package set follows Fedora Kiwi's Phosh intent by installing the `phos
 
 `blob-wrangler` is installed from the `samcday/blob-wrangler-nightly` COPR to load device firmware blobs on the target.
 
-## SDM845 Dracut Drivers
+## Device Profiles
 
-The explicit candidate inventory lives in:
+Pocketlab currently has explicit per-device mkosi profiles:
 
 ```text
-mkosi.skeleton/usr/lib/pocketlab/dracut-force-drivers.list
+sdm845-oneplus-fajita
+msm8916-samsung-a5u-eur
 ```
 
-During finalization, the list is filtered through the installed Rawhide kernel and written to:
+Each profile provides:
 
 ```text
-/etc/dracut.conf.d/10-sdm845-fajita-force-drivers.conf
+/etc/kernel/devicetree
+/usr/lib/pocketlab/dracut-force-drivers.list
+```
+
+During finalization, the driver list is filtered through the installed Rawhide kernel and written to:
+
+```text
+/etc/dracut.conf.d/10-pocketlab-<profile>-force-drivers.conf
 ```
 
 Candidates missing from the installed kernel are recorded in:
 
 ```text
-/var/lib/pocketlab/dracut-force-drivers.missing
+/var/lib/pocketlab/dracut-force-drivers.<profile>.missing
 ```
 
 This keeps the driver inventory explicit without making Rawhide module renames fatal.

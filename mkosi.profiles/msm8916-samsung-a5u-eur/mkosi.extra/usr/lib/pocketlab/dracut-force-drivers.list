@@ -1,0 +1,79 @@
+# Explicit MSM8916 / Samsung Galaxy A5 (a5u-eur) initramfs driver inventory.
+#
+# mkosi.finalize.chroot filters this list through the installed Fedora kernel
+# before writing a dracut force_drivers config, because Rawhide module names
+# move and dracut's force_drivers key is intentionally strict.
+
+# Core Qualcomm firmware/resource plumbing.
+qcom_scm
+qcom-apcs-ipc-mailbox
+qcom_hwspinlock
+smem
+socinfo
+cmd-db
+qcom_smd
+smd-rpm
+rpmpd
+clk-smd-rpm
+apcs-msm8916
+a53-pll
+cpr
+qcom-cpufreq-nvmem
+
+# Clocks, pinctrl, GPIO, PMIC, regulators, nvmem.
+gcc-msm8916
+pinctrl-msm8916
+qcom-spmi-pmic
+pinctrl-spmi-gpio
+pinctrl-spmi-mpp
+qcom_smd-regulator
+qcom_spmi-regulator
+nvmem_qfprom
+
+# RPM interconnects.
+icc-smd-rpm
+qnoc-msm8916
+
+# QUP I2C/SPI and BAM DMA buses.
+bam_dma
+i2c-qup
+spi-qup
+
+# eMMC root storage.
+mmc_core
+mmc_block
+sdhci
+sdhci-pltfm
+sdhci-msm
+
+# USB/debug path.
+ulpi
+phy-qcom-usb-hs
+phy-qcom-usb-hs-28nm
+phy-qcom-usb-hsic
+ci_hdrc
+ci_hdrc_msm
+extcon-usb-gpio
+
+# Input and power devices useful before userspace is fully healthy.
+gpio-keys
+pm8941-pwrkey
+pm8916_wdt
+qcom-spmi-vadc
+qcom-spmi-iadc
+qcom-spmi-adc5
+qcom-spmi-rradc
+qcom-coincell
+rt5033
+rt5033-regulator
+rt5033_battery
+rt5033_charger
+mms114
+
+# Remoteproc/modem/WCNSS plumbing useful during early bring-up.
+qcom_q6v5_mss
+qcom_wcnss_pil
+wcnss_ctrl
+rpmsg_char
+qrtr_smd
+qcom_bam_dmux

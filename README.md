@@ -45,7 +45,9 @@ This repo avoids mkosi's initrd and UKI paths. `/boot` is produced by Fedora mec
 - The active mkosi profile provides `/etc/kernel/devicetree`, letting Fedora's `90-loaderentry.install` copy and reference the selected device DTB.
 - `mkosi.finalize.chroot` reruns `kernel-install add` after generating a filtered per-device dracut config.
 
-The Phosh package set follows Fedora Kiwi's Phosh intent by installing the `phosh-desktop-environment` environment plus `initial-setup-gui-wayland-generic`. `fedora-release-mobility` is intentionally excluded for this bring-up image.
+The Phosh package set intentionally avoids Fedora's `phosh-desktop-environment` comps environment. That environment pulls broad desktop groups such as `hardware-support`, `base-x`, `standard`, `fonts`, and `input-methods`; this image keeps the Phosh shell and default app bundle as an explicit package allowlist instead.
+
+Firmware is explicit and device-oriented: `qcom-firmware` for SDM845 platform support and `atheros-firmware` for Wi-Fi. Unrelated generic firmware packages are blocked through DNF `excludepkgs` so they are not downloaded during dependency resolution. `fedora-release-mobility` is intentionally excluded for this bring-up image.
 
 `dracut-config-rescue` is also excluded because Fedora's rescue initrd path breaks this non-ESP/XBOOTLDR-only image and is not useful for this device workflow.
 

@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+has_profiles="$({
+    python3 - "$MKOSI_CONFIG" <<'PY'
+import json
+import sys
+
+with open(sys.argv[1], encoding="utf-8") as f:
+    config = json.load(f)
+
+profiles = config.get("profiles") or config.get("Profiles") or []
+if isinstance(profiles, str):
+    profiles = [p for p in profiles.replace(",", " ").split() if p]
+
+print("yes" if profiles else "no")
+PY
+})"
+
+if [[ "$has_profiles" == yes ]]; then
+    exit 0
+fi
+
+rootfs="$OUTPUTDIR/rootfs"
+output="$OUTPUTDIR/image.ero"
+
+if [[ ! -d "$rootfs" ]]; then
+    echo "Missing rootfs directory output: $rootfs" >&2
+    exit 1
+fi
+
+if ! command -v mkfs.erofs >/dev/null 2>&1; then
+    echo "mkfs.erofs not found; install erofs-utils to build $output" >&2
+    exit 1
+fi
+
+rm -f "$output"
+mkfs.erofs "$output" "$rootfs"

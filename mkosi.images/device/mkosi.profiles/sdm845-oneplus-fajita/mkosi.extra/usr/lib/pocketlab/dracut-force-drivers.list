@@ -1,8 +1,9 @@
 # Explicit SDM845 / OnePlus 6T initramfs driver inventory.
 #
-# mkosi.finalize.chroot filters this list through the installed Fedora kernel
-# before writing a dracut force_drivers config, because Rawhide module names
-# move and dracut's force_drivers key is intentionally strict.
+# mkosi.images/device/mkosi.finalize.chroot filters this list through the
+# installed Fedora kernel before writing a dracut force_drivers config, because
+# Rawhide module names move and dracut's force_drivers key is intentionally
+# strict.
 
 # Core Qualcomm firmware/resource plumbing.
 qcom_scm
